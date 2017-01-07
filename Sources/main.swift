@@ -10,7 +10,15 @@ let router = Router()
 
 HeliumLogger.use(.entry)
 
-let connection = PostgreSQLConnection(host: "localhost", port: 5432, options: [.databaseName("postgres"), .userName("postgres"), .password("postgres")])
+let postgresDatabaseUrlString = ProcessInfo.processInfo.environment["DATABASE_URL"]
+
+let connection: PostgreSQLConnection = {
+    if let postgresDatabaseUrlString = postgresDatabaseUrlString, let url = URL(string: postgresDatabaseUrlString) {
+        return PostgreSQLConnection(url: url)
+    } else {
+        return PostgreSQLConnection(host: "localhost", port: 5432, options: [.databaseName("postgres"), .userName("postgres"), .password("postgres")])
+    }
+}()
 print(connection)
 let credentials = Credentials()
 credentials.register(plugin: CustomCredentialsPlugin())
