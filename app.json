@@ -1,12 +1,12 @@
 {
-    "name": "backendProject",
+    "name": "swift-kitura-test",
     "description": "Kitura app made compatible with Heroku",
     "repository": "https://github.com/joke1410/swift-kitura-test.git",
     "logo": "https://raw.githubusercontent.com/joaoamaral/KituraHeroku/master/KituraHeroku.png",
     "keywords": ["web", "swift", "kitura"],
     "buildpacks": [
-                   {
-                   "url": "https://github.com/kylef/heroku-buildpack-swift"
-                   }
-                   ]
+      {
+        "url": "https://github.com/kylef/heroku-buildpack-swift"
+      }
+    ]
 }
