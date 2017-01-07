@@ -1,3 +1,4 @@
+import Foundation
 import Kitura
 import SwiftKuery
 import SwiftKueryPostgreSQL
@@ -75,8 +76,8 @@ router.all(middleware: credentials)
 
 router.register(controller: UsersController())
 
-// Add an HTTP server and connect it to the router
-Kitura.addHTTPServer(onPort: 8080, with: router)
+let port = Int(ProcessInfo.processInfo.environment["PORT"] ?? "8080") ?? 8080
+Kitura.addHTTPServer(onPort: port, with: router)
 
 // Start the Kitura runloop (this call never returns)
 Kitura.run()
