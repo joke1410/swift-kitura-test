@@ -4,6 +4,7 @@ import SwiftKuery
 import SwiftKueryPostgreSQL
 import HeliumLogger
 import Credentials
+import SwiftyJSON
 
 // Create a new router
 let router = Router()
@@ -49,20 +50,16 @@ router.get("/:username") { request, response, next in
 
             connection.execute(query: query) { result in
                 if let resultSet = result.asResultSet {
-                    var retString = ""
+                    var array: [[String: Any]] = []
 
                     for row in resultSet.rows {
-                        print("row: \(row)")
-                        for value in row {
-                            print("value: \(value)")
-                            if let value = value as? String {
-                                retString.append("\(value.padding(toLength: 35, withPad: " ", startingAt: 0))")
-                            }
-                        }
-                        retString.append("\n")
+                        var dict: [String: Any] = [:]
+                        dict["id"] = row[0] as? String ?? ""
+                        dict["title"] = row[1] as? String ?? ""
+                        array.append(dict)
                     }
-                    print(retString)
-                    response.send("Hello, \(request.parameters["username"])!, here is your data: \(retString)")
+                    let json = JSON(array)
+                    response.send(json.rawString() ?? "")
                 }
                 else if let queryError = result.asError {
                     // Something went wrong.
@@ -71,8 +68,6 @@ router.get("/:username") { request, response, next in
             }
         }
     }
-
-//    response.send("Hello, \(request.parameters["username"])!")
     next()
 }
 
