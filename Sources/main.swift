@@ -29,7 +29,7 @@ router.get("/:username") { request, response, next in
 
     connection.connect() { error in
         if let error = error {
-            print("Error is \(error)")
+            response.send("Error is \(error)")
             return
         }
         else {
@@ -42,12 +42,6 @@ router.get("/:username") { request, response, next in
                 if let resultSet = result.asResultSet {
                     var retString = ""
 
-                    for title in resultSet.titles {
-                        // The column names of the result.
-                        retString.append("\(title.padding(toLength: 35, withPad: " ", startingAt: 0)))")
-                    }
-                    retString.append("\n")
-
                     for row in resultSet.rows {
                         print("row: \(row)")
                         for value in row {
@@ -59,16 +53,17 @@ router.get("/:username") { request, response, next in
                         retString.append("\n")
                     }
                     print(retString)
+                    response.send("Hello, \(request.parameters["username"])!, here is your data: \(retString)")
                 }
                 else if let queryError = result.asError {
                     // Something went wrong.
-                    print("Something went wrong \(queryError)")
+                    response.send("Something went wrong \(queryError)")
                 }
             }
         }
     }
 
-    response.send("Hello, \(request.parameters["username"])!")
+//    response.send("Hello, \(request.parameters["username"])!")
     next()
 }
 
