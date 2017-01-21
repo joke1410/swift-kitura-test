@@ -13,11 +13,13 @@ extension Router {
 
     func register(controller: Controller) {
         let getList = controller.endpoints.filter { $0.method == .GET }
+        let postList = controller.endpoints.filter { $0.method == .POST }
+        let putList = controller.endpoints.filter { $0.method == .PUT }
+        let deleteList = controller.endpoints.filter { $0.method == .DELETE }
 
-        getList.forEach {
-            get($0.path, handler: $0.routerHandler)
-
-            all(middleware: CustomMiddleware())
-        }
+        getList.forEach { get($0.path, handler: $0.routerHandler) }
+        postList.forEach { post($0.path, handler: $0.routerHandler) }
+        putList.forEach { put($0.path, handler: $0.routerHandler) }
+        deleteList.forEach { delete($0.path, handler: $0.routerHandler) }
     }
 }
