@@ -13,6 +13,12 @@ struct CreateTodoEndpoint: Endpoint {
     let method = HTTPMethod.POST
     let path = "/todos"
     let routerHandler: RouterHandler = { request, response, next in
+
+        guard let user = request.userProfile else {
+            response.send("ni ma")
+            return
+        }
+
         guard let json = request.body?.asJSON else  {
             response.send("a gdzie json? :(")
             next()
@@ -25,7 +31,7 @@ struct CreateTodoEndpoint: Endpoint {
             return
         }
 
-        TodosRequester().add(todo: todo) { error in
+        TodosRequester().add(todo: todo, userId: user.id) { error in
             if let error = error {
                 response.send(error.localizedDescription)
             } else {

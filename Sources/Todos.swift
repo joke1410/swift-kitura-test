@@ -12,4 +12,5 @@ class Todos : Table {
     let tableName = "todos"
     let id = Column("id")
     let title = Column("title")
+    let userId = Column("user_id")
 }

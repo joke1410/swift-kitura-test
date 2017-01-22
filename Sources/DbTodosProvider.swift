@@ -25,7 +25,7 @@ class DbTodosProvider {
         )
     }()
 
-    func provideList(completion: @escaping (JSON?, Error?) -> Void) {
+    func provideList(userId: String, completion: @escaping (JSON?, Error?) -> Void) {
         let todos = Todos()
         
         connection.connect() { error in
@@ -34,7 +34,7 @@ class DbTodosProvider {
                 return
             } else {
 
-                let query = Select(todos.id, todos.title, from: todos)
+                let query = Select(todos.id, todos.title, from: todos).where(todos.userId == userId)
 
                 connection.execute(query: query) { result in
                     if let resultSet = result.asResultSet {

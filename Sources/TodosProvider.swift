@@ -12,8 +12,8 @@ class TodosProvider {
 
     fileprivate lazy var dbTodosProvider = DbTodosProvider()
 
-    func provideList(completion: @escaping ([Todo]?, Error?) -> Void) {
-        dbTodosProvider.provideList() { json, error in
+    func provideList(userId: String, completion: @escaping ([Todo]?, Error?) -> Void) {
+        dbTodosProvider.provideList(userId: userId) { json, error in
             if let error = error {
                 completion(nil, error)
                 return

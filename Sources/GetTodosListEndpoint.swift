@@ -13,7 +13,13 @@ struct GetTodosListEndpoint: Endpoint {
     let method = HTTPMethod.GET
     let path = "/todos"
     let routerHandler: RouterHandler = { request, response, next in
-        TodosProvider().provideList() { todos, error in
+
+        guard let user = request.userProfile else {
+            response.send("ni ma")
+            return
+        }
+
+        TodosProvider().provideList(userId: user.id) { todos, error in
             if let error = error {
                 response.send(error.localizedDescription)
             } else if let todos = todos {

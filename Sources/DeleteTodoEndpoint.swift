@@ -13,13 +13,19 @@ struct DeleteTodoEndpoint: Endpoint {
     let method = HTTPMethod.DELETE
     let path = "/todos/:id"
     let routerHandler: RouterHandler = { request, response, next in
+
+        guard let user = request.userProfile else {
+            response.send("ni ma")
+            return
+        }
+        
         guard let id = request.parameters["id"] else {
             response.send("nie umiem przeczytać id :(")
             next()
             return
         }
 
-        TodosRequester().delete(id: id) { error in
+        TodosRequester().delete(id: id, userId: user.id) { error in
             if let error = error {
                 response.send(error.localizedDescription)
             } else {
