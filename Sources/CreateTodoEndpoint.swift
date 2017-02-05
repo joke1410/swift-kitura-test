@@ -8,6 +8,7 @@
 
 import Foundation
 import Kitura
+import SwiftyJSON
 
 struct CreateTodoEndpoint: Endpoint {
     let method = HTTPMethod.POST
@@ -29,7 +30,7 @@ struct CreateTodoEndpoint: Endpoint {
                     }
                     print(data.description)
                     print(ProcessInfo.processInfo.environment)
-                    response.send(path)
+                    response.send(json: JSON(["path": path]))
                     next()
                 }
             }
