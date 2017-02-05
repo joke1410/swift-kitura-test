@@ -13,6 +13,10 @@ import Credentials
 
 final class CustomCredentialsPlugin: CredentialsPluginProtocol {
 
+    enum Error: Swift.Error {
+        case wrongAuthorizationString
+    }
+
     var name: String {
         return "Custom"
     }
@@ -23,6 +27,8 @@ final class CustomCredentialsPlugin: CredentialsPluginProtocol {
         return false
     }
 
+    fileprivate lazy var usersProvider = UsersProvider()
+
     func authenticate(request: RouterRequest, response: RouterResponse, options: [String : Any], onSuccess: @escaping (UserProfile) -> Void, onFailure: @escaping (HTTPStatusCode?, [String : String]?) -> Void, onPass: @escaping (HTTPStatusCode?, [String : String]?) -> Void, inProgress: @escaping () -> Void) {
 
         guard let basicAuth = request.headers["Authorization"] else {
@@ -30,20 +36,25 @@ final class CustomCredentialsPlugin: CredentialsPluginProtocol {
             return
         }
 
-        identifyAndAuthenticate(basicAuth: basicAuth) { id in
+        identifyAndAuthenticate(basicAuth: basicAuth) { id, error in
             print("id")
+            if let _ = error {
+                onFailure(.forbidden, nil)
+                return
+            }
+
             if let id = id {
-                onSuccess(UserProfile(id: id, displayName: "p.b@c.d", provider: "custom-provider"))
+                onSuccess(UserProfile(id: id, displayName: "", provider: "custom-provider"))
             }
         }
 
     }
 
-    func identifyAndAuthenticate(basicAuth: String, completion: (String?) -> Void) {
+    func identifyAndAuthenticate(basicAuth: String, completion: @escaping (String?, Swift.Error?) -> Void) {
         let basicAuthComponents = basicAuth.components(separatedBy: " ")
 
         guard basicAuthComponents.count == 2 else {
-            // completion(nil, error)
+             completion(nil, Error.wrongAuthorizationString)
             return
         }
 
@@ -54,12 +65,13 @@ final class CustomCredentialsPlugin: CredentialsPluginProtocol {
         let components = decodedString.components(separatedBy: ":")
 
         guard components.count == 2 else {
-            // completion(nil, error)
+             completion(nil, Error.wrongAuthorizationString)
             return
         }
         print("login: \(components[0])")
         print("password: \(components[1])")
         print("hash: \(components[1].sha256)")
-        completion("1")
+
+        usersProvider.provideUserId(withEmail: components[0], andPasswordHash: components[1].sha256, completion: completion)
     }
 }

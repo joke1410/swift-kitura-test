@@ -12,6 +12,6 @@ import Kitura
 final class UsersController: Controller {
 
     var endpoints: [Endpoint]  = [
-        UserByIdEndpoint()
+        CreateUserEndpoint()
     ]
 }

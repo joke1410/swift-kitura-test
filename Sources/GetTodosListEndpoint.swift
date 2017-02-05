@@ -16,6 +16,7 @@ struct GetTodosListEndpoint: Endpoint {
 
         guard let user = request.userProfile else {
             response.send("ni ma")
+            next()
             return
         }
 

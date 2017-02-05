@@ -1,5 +1,5 @@
 //
-//  Handler.swift
+//  Endpoint.swift
 //  backendProject
 //
 //  Created by Peter Bruz on 19/11/2016.

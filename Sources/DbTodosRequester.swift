@@ -13,14 +13,9 @@ import SwiftyJSON
 
 class DbTodosRequester {
 
-    let dbHost = ProcessInfo.processInfo.environment["DB_HOST"] ?? "localhost"
-    let dbName = ProcessInfo.processInfo.environment["DB_NAME"] ?? "postgres"
-    let dbUsername = ProcessInfo.processInfo.environment["DB_USERNAME"] ?? "postgres"
-    let dbPassword = ProcessInfo.processInfo.environment["DB_PASSWORD"] ?? "postgres"
-
-    lazy var connection: PostgreSQLConnection = { [unowned self] in
-        return PostgreSQLConnection(host: self.dbHost, port: 5432, options: [
-            .databaseName(self.dbName), .userName(self.dbUsername), .password(self.dbPassword)
+    fileprivate lazy var connection: PostgreSQLConnection = { [unowned self] in
+        return PostgreSQLConnection(host: AppDatabaseConfig.host, port: AppDatabaseConfig.port, options: [
+            .databaseName(AppDatabaseConfig.name), .userName(AppDatabaseConfig.username), .password(AppDatabaseConfig.password)
             ]
         )
     }()
