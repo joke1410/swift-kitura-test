@@ -15,19 +15,19 @@ struct UpdateTodoEndpoint: Endpoint {
     let routerHandler: RouterHandler = { request, response, next in
 
         guard let user = request.userProfile else {
-            response.send("ni ma")
+            _ = response.send(status: .unauthorized)
             next()
             return
         }
 
         guard let json = request.body?.asJSON else  {
-            response.send("a gdzie json? :(")
+            _ = response.send(status: .unprocessableEntity)
             next()
             return
         }
 
         guard let todo = try? TodoMapper().mapToTodo(json: json) else {
-            response.send("nie umiem tego sparsować :(")
+            _ = response.send(status: .unprocessableEntity)
             next()
             return
         }
@@ -36,7 +36,7 @@ struct UpdateTodoEndpoint: Endpoint {
             if let error = error {
                 response.send(error.localizedDescription)
             } else {
-                response.send("ok!")
+                _ = response.send(status: .noContent)
             }
             next()
         }

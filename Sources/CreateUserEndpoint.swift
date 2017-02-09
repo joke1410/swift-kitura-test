@@ -26,14 +26,8 @@ struct CreateUserEndpoint: Endpoint {
             return
         }
 
-//        TodosRequester().add(todo: todo, userId: user.id) { error in
-//            if let error = error {
-//                response.send(error.localizedDescription)
-//            } else {
-//                response.send("ok!")
-//            }
-//            next()
-//        }
+        // TODO: save user
+        
         next()
     }
 }

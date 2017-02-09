@@ -12,8 +12,7 @@ import Kitura
 final class CustomMiddleware: RouterMiddleware {
 
     func handle(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
-        print("custom middleware")
-        print(request.headers.enumerated())
+        print("Do sth unordinary!")
         next()
     }
 }

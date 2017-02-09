@@ -15,7 +15,7 @@ struct GetTodosListEndpoint: Endpoint {
     let routerHandler: RouterHandler = { request, response, next in
 
         guard let user = request.userProfile else {
-            response.send("ni ma")
+            _ = response.send(status: .unauthorized)
             next()
             return
         }

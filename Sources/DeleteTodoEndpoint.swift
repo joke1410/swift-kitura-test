@@ -15,13 +15,13 @@ struct DeleteTodoEndpoint: Endpoint {
     let routerHandler: RouterHandler = { request, response, next in
 
         guard let user = request.userProfile else {
-            response.send("ni ma")
+            _ = response.send(status: .unauthorized)
             next()
             return
         }
         
         guard let id = request.parameters["id"] else {
-            response.send("nie umiem przeczytać id :(")
+            _ = response.send(status: .badRequest)
             next()
             return
         }
@@ -30,7 +30,7 @@ struct DeleteTodoEndpoint: Endpoint {
             if let error = error {
                 response.send(error.localizedDescription)
             } else {
-                response.send("ok, usunięte!")
+                _ = response.send(status: .noContent)
             }
             next()
         }
