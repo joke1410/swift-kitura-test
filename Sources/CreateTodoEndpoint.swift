@@ -37,7 +37,8 @@ struct CreateTodoEndpoint: Endpoint {
             if let error = error {
                 response.send(error.localizedDescription)
             } else {
-                _ = response.send(status: .noContent)
+//                _ = response.send(status: .noContent)
+                response.send("added")
             }
             next()
         }
