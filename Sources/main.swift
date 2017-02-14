@@ -15,7 +15,7 @@ let bodyParser = BodyParser()
 
 router.get("/images", middleware: StaticFileServer(path: "./images"))
 
-router.register(controller: UsersController(), middleware: bodyParser)
+//router.register(controller: UsersController(), middleware: bodyParser)
 router.register(controller: TodosController(), middleware: credentials, bodyParser)
 router.register(controller: ImagesController(), middleware: bodyParser)
 
