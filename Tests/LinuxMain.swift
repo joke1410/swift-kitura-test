@@ -9,6 +9,7 @@
 import XCTest
 @testable import backendProjectTests
 
+// https://bugs.swift.org/browse/SR-1503
 XCTMain([
     testCase(AnyTests.allTests),
 ])

@@ -1,5 +1,7 @@
 os:
-- linux
+# https://bugs.swift.org/browse/SR-1503
+# - linux 
+
 - osx
 language: generic
 sudo: required
