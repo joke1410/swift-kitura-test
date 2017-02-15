@@ -8,6 +8,7 @@
 
 import Foundation
 import Kitura
+import LoggerAPI
 
 struct UpdateTodoEndpoint: Endpoint {
     let method = HTTPMethod.PUT
@@ -23,7 +24,7 @@ struct UpdateTodoEndpoint: Endpoint {
         }
 
         guard let json = request.body?.asJSON else  {
-            logger.defaultLog(.debug, msg: "nie ma body lub to nie json")
+            Log.debug("nie ma body lub to nie json")
             _ = response.send(status: .unprocessableEntity)
             next()
             return
@@ -42,6 +43,7 @@ struct UpdateTodoEndpoint: Endpoint {
             } else {
                 logger.defaultLog(.debug, msg: "no to odpowiadamy...")
                 _ = response.send(status: .noContent)
+                response.status(.noContent).send("")
                 logger.defaultLog(.debug, msg: "...odpowiedzieliśmy")
             }
             next()
