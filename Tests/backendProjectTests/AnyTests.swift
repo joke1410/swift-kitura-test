@@ -21,3 +21,11 @@ class AnyTest: XCTestCase {
         XCTAssert(x == 10)
     }
 }
+
+extension AnyTest {
+    static var allTests : [(String, (AnyTest) -> () throws -> Void)] {
+        return [
+            ("testX", testX),
+        ]
+    }
+}
