@@ -40,7 +40,9 @@ struct UpdateTodoEndpoint: Endpoint {
             if let error = error {
                 response.send(error.localizedDescription)
             } else {
+                logger.defaultLog(.debug, msg: "no to odpowiadamy...")
                 _ = response.send(status: .noContent)
+                logger.defaultLog(.debug, msg: "...odpowiedzieliśmy")
             }
             next()
         }
