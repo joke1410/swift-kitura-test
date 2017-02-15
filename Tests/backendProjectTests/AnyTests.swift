@@ -8,7 +8,7 @@
 
 import XCTest
 
-class AnyTest: XCTestCase {
+class AnyTests: XCTestCase {
 
     var x: Int!
 
@@ -22,8 +22,8 @@ class AnyTest: XCTestCase {
     }
 }
 
-extension AnyTest {
-    static var allTests : [(String, (AnyTest) -> () throws -> Void)] {
+extension AnyTests {
+    static var allTests : [(String, (AnyTests) -> () throws -> Void)] {
         return [
             ("testX", testX),
         ]
