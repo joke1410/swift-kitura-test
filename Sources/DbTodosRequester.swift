@@ -22,7 +22,6 @@ class DbTodosRequester {
 
     func add(todo: Todo, userId: String, completion: @escaping (Error?) -> Void) {
         let todos = Todos()
-
         defer { connection.closeConnection() }
         connection.connect() { error in
             if let error = error {
@@ -42,17 +41,20 @@ class DbTodosRequester {
 
     func update(todo: Todo, userId: String, completion: @escaping (Error?) -> Void) {
         let todos = Todos()
-
+        logger.defaultLog(.debug, msg: "update todo")
         defer { connection.closeConnection() }
         connection.connect() { error in
             if let error = error {
                 completion(error)
                 return
             } else {
+                logger.defaultLog(.debug, msg: "connection ready")
 
                 let query = Update(todos, set: [(todos.title, todo.title)], where: todos.id == todo.id && todos.userId == userId)
 
+                logger.defaultLog(.debug, msg: "query ready")
                 connection.execute(query: query) { result in
+                    logger.defaultLog(.debug, msg: "we have result")
                     completion(result.success ? nil : result.asError)
                 }
             }

@@ -14,19 +14,23 @@ struct UpdateTodoEndpoint: Endpoint {
     let path = "/todos"
     let routerHandler: RouterHandler = { request, response, next in
 
+        logger.defaultLog(.debug, msg: "zaczynamy zabawę")
         guard let user = request.userProfile else {
+            logger.defaultLog(.debug, msg: "nie ma takiego usera")
             _ = response.send(status: .unauthorized)
             next()
             return
         }
 
         guard let json = request.body?.asJSON else  {
+            logger.defaultLog(.debug, msg: "nie ma body lub to nie json")
             _ = response.send(status: .unprocessableEntity)
             next()
             return
         }
 
         guard let todo = try? TodoMapper().mapToTodo(json: json) else {
+            logger.defaultLog(.debug, msg: "oups, jesteś pewien że dobrze stworzyłeś JSON'a?")
             _ = response.send(status: .unprocessableEntity)
             next()
             return
