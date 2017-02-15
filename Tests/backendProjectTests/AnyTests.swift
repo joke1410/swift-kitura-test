@@ -7,8 +7,6 @@
 //
 
 import XCTest
-import SwiftyJSON
-@testable import GreenGurus
 
 class AnyTest: XCTestCase {
 
@@ -19,7 +17,7 @@ class AnyTest: XCTestCase {
         x = 10
     }
 
-    func checkX() {
+    func testX() {
         XCTAssert(x == 10)
     }
 }
