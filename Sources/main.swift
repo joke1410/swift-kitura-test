@@ -1,6 +1,7 @@
 import Foundation
 import Kitura
 import HeliumLogger
+import LoggerAPI
 import Credentials
 import SwiftyJSON
 
@@ -11,12 +12,25 @@ HeliumLogger.use(.entry)
 let credentials = Credentials()
 credentials.register(plugin: CustomCredentialsPlugin())
 
-let logger = HeliumLogger(.entry)
+var logger = HeliumLogger(.entry)
 logger.defaultLog(.entry, msg: "Start logging")
 
 let bodyParser = BodyParser()
 
 router.get("/images", middleware: StaticFileServer(path: "./images"))
+
+router.get("/refresh") { request, response, next in
+    let type: LoggerMessageType =  {
+        switch ProcessInfo.processInfo.environment["LOG_LEVEL"] ?? "" {
+        case "ENTRY": return .entry
+        case "ERROR": return .error
+        default: return .verbose
+        }
+    }()
+    logger = HeliumLogger(type)
+    _ = response.send(status: .OK)
+    next()
+}
 
 router.register(controller: TodosController(), middleware: credentials, bodyParser)
 router.register(controller: ImagesController(), middleware: bodyParser)

@@ -43,7 +43,7 @@ struct UpdateTodoEndpoint: Endpoint {
             } else {
                 logger.defaultLog(.debug, msg: "no to odpowiadamy...")
                 _ = response.send(status: .noContent)
-                response.status(.noContent).send("")
+//                response.status(.noContent).send("")
                 logger.defaultLog(.debug, msg: "...odpowiedzieliśmy")
             }
             next()
