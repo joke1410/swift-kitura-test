@@ -25,6 +25,7 @@ class DbTodosRequester {
 
         connection.connect() { error in
             if let error = error {
+                logger.defaultLog(.error, msg: error.localizedDescription)
                 completion(error)
                 return
             } else {

@@ -15,6 +15,7 @@ class TodosProvider {
     func provideList(userId: String, completion: @escaping ([Todo]?, Error?) -> Void) {
         dbTodosProvider.provideList(userId: userId) { json, error in
             if let error = error {
+                logger.defaultLog(.error, msg: error.localizedDescription)
                 completion(nil, error)
                 return
             } else if let json = json {
@@ -22,6 +23,7 @@ class TodosProvider {
                     let todos = try TodoMapper().mapToTodoList(json: json)
                     completion(todos, nil)
                 } catch let error {
+                    logger.defaultLog(.error, msg: error.localizedDescription)
                     completion(nil, error)
                 }
             }

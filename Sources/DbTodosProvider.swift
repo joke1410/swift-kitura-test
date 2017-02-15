@@ -25,6 +25,7 @@ class DbTodosProvider {
         
         connection.connect() { error in
             if let error = error {
+                logger.defaultLog(.error, msg: error.localizedDescription)
                 completion(nil, error)
                 return
             } else {
@@ -45,6 +46,7 @@ class DbTodosProvider {
                         completion(json, nil)
                     }
                     else if let queryError = result.asError {
+                        logger.defaultLog(.error, msg: queryError.localizedDescription)
                         completion(nil, queryError)
                     }
                 }

@@ -11,6 +11,9 @@ HeliumLogger.use(.entry)
 let credentials = Credentials()
 credentials.register(plugin: CustomCredentialsPlugin())
 
+let logger = HeliumLogger(.entry)
+logger.defaultLog(.entry, msg: "Start logging")
+
 let bodyParser = BodyParser()
 
 router.get("/images", middleware: StaticFileServer(path: "./images"))
