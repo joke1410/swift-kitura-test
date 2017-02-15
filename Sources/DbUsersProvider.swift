@@ -23,6 +23,7 @@ class DbUsersProvider {
     func provideUserId(withEmail email: String, andPasswordHash passwordHash: String, completion: @escaping (String?, Error?) -> Void) {
         let users = Users()
 
+        defer { connection.closeConnection() }
         connection.connect() { error in
             if let error = error {
                 logger.defaultLog(.error, msg: error.localizedDescription)

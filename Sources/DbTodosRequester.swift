@@ -23,6 +23,7 @@ class DbTodosRequester {
     func add(todo: Todo, userId: String, completion: @escaping (Error?) -> Void) {
         let todos = Todos()
 
+        defer { connection.closeConnection() }
         connection.connect() { error in
             if let error = error {
                 logger.defaultLog(.error, msg: error.localizedDescription)
@@ -42,6 +43,7 @@ class DbTodosRequester {
     func update(todo: Todo, userId: String, completion: @escaping (Error?) -> Void) {
         let todos = Todos()
 
+        defer { connection.closeConnection() }
         connection.connect() { error in
             if let error = error {
                 completion(error)
@@ -60,6 +62,7 @@ class DbTodosRequester {
     func delete(id: String, userId: String, completion: @escaping (Error?) -> Void) {
         let todos = Todos()
 
+        defer { connection.closeConnection() }
         connection.connect() { error in
             if let error = error {
                 completion(error)

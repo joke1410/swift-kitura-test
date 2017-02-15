@@ -22,7 +22,8 @@ class DbTodosProvider {
 
     func provideList(userId: String, completion: @escaping (JSON?, Error?) -> Void) {
         let todos = Todos()
-        
+
+        defer { connection.closeConnection() }
         connection.connect() { error in
             if let error = error {
                 logger.defaultLog(.error, msg: error.localizedDescription)
