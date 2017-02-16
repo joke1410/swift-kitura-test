@@ -8,6 +8,7 @@
 
 import Foundation
 import Kitura
+import LoggerAPI
 
 struct DeleteTodoEndpoint: Endpoint {
     let method = HTTPMethod.DELETE
@@ -28,6 +29,7 @@ struct DeleteTodoEndpoint: Endpoint {
 
         TodosRequester().delete(id: id, userId: user.id) { error in
             if let error = error {
+                Log.error(error.localizedDescription)
                 response.send(error.localizedDescription)
             } else {
                 _ = response.send(status: .noContent)
