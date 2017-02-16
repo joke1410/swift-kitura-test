@@ -14,15 +14,11 @@ import LoggerAPI
 
 class DbTodosRequester {
 
-    fileprivate lazy var connection: PostgreSQLConnection = { [unowned self] in
-        return PostgreSQLConnection(host: AppDatabaseConfig.host, port: AppDatabaseConfig.port, options: [
-            .databaseName(AppDatabaseConfig.name), .userName(AppDatabaseConfig.username), .password(AppDatabaseConfig.password)
-            ]
-        )
-    }()
-
     func add(todo: Todo, userId: String, completion: @escaping (Error?) -> Void) {
         let todos = Todos()
+
+        let connection = ConnectionFactory.shared.createConnection()
+
         defer { connection.closeConnection() }
         connection.connect() { error in
             if let error = error {
@@ -48,6 +44,8 @@ class DbTodosRequester {
     func update(todo: Todo, userId: String, completion: @escaping (Error?) -> Void) {
         let todos = Todos()
 
+        let connection = ConnectionFactory.shared.createConnection()
+
         defer { connection.closeConnection() }
         connection.connect() { error in
             if let error = error {
@@ -72,6 +70,8 @@ class DbTodosRequester {
 
     func delete(id: String, userId: String, completion: @escaping (Error?) -> Void) {
         let todos = Todos()
+
+        let connection = ConnectionFactory.shared.createConnection()
 
         defer { connection.closeConnection() }
         connection.connect() { error in

@@ -14,15 +14,10 @@ import LoggerAPI
 
 class DbTodosProvider {
 
-    fileprivate lazy var connection: PostgreSQLConnection = { [unowned self] in
-        return PostgreSQLConnection(host: AppDatabaseConfig.host, port: AppDatabaseConfig.port, options: [
-            .databaseName(AppDatabaseConfig.name), .userName(AppDatabaseConfig.username), .password(AppDatabaseConfig.password)
-            ]
-        )
-    }()
-
     func provideList(userId: String, completion: @escaping (JSON?, Error?) -> Void) {
         let todos = Todos()
+
+        let connection = ConnectionFactory.shared.createConnection()
 
         defer { connection.closeConnection() }
         connection.connect() { error in

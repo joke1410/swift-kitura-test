@@ -14,15 +14,11 @@ import LoggerAPI
 
 class DbUsersProvider {
 
-    fileprivate lazy var connection: PostgreSQLConnection = { [unowned self] in
-        return PostgreSQLConnection(host: AppDatabaseConfig.host, port: AppDatabaseConfig.port, options: [
-            .databaseName(AppDatabaseConfig.name), .userName(AppDatabaseConfig.username), .password(AppDatabaseConfig.password)
-            ]
-        )
-    }()
 
     func provideUserId(withEmail email: String, andPasswordHash passwordHash: String, completion: @escaping (String?, Error?) -> Void) {
         let users = Users()
+
+        let connection = ConnectionFactory.shared.createConnection()
 
         defer { connection.closeConnection() }
         connection.connect() { error in
