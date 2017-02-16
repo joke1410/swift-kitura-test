@@ -10,6 +10,7 @@ import Foundation
 import SwiftKuery
 import SwiftKueryPostgreSQL
 import SwiftyJSON
+import LoggerAPI
 
 class DbTodosRequester {
 
@@ -25,7 +26,7 @@ class DbTodosRequester {
         defer { connection.closeConnection() }
         connection.connect() { error in
             if let error = error {
-                logger.defaultLog(.error, msg: error.localizedDescription)
+                Log.error(error.localizedDescription)
                 completion(error)
                 return
             } else {
@@ -33,6 +34,11 @@ class DbTodosRequester {
                 let query = Insert(into: todos, valueTuples: (todos.title, todo.title), (todos.userId, userId))
 
                 connection.execute(query: query) { result in
+
+                    if let error = result.asError {
+                        Log.error(error.localizedDescription)
+                    }
+
                     completion(result.success ? nil : result.asError)
                 }
             }
@@ -41,20 +47,23 @@ class DbTodosRequester {
 
     func update(todo: Todo, userId: String, completion: @escaping (Error?) -> Void) {
         let todos = Todos()
-        logger.defaultLog(.debug, msg: "update todo")
+
         defer { connection.closeConnection() }
         connection.connect() { error in
             if let error = error {
+                Log.error(error.localizedDescription)
                 completion(error)
                 return
             } else {
-                logger.defaultLog(.debug, msg: "connection ready")
 
                 let query = Update(todos, set: [(todos.title, todo.title)], where: todos.id == todo.id && todos.userId == userId)
 
-                logger.defaultLog(.debug, msg: "query ready")
                 connection.execute(query: query) { result in
-                    logger.defaultLog(.debug, msg: "we have result")
+
+                    if let error = result.asError {
+                        Log.error(error.localizedDescription)
+                    }
+
                     completion(result.success ? nil : result.asError)
                 }
             }
@@ -67,6 +76,7 @@ class DbTodosRequester {
         defer { connection.closeConnection() }
         connection.connect() { error in
             if let error = error {
+                Log.error(error.localizedDescription)
                 completion(error)
                 return
             } else {
@@ -74,6 +84,11 @@ class DbTodosRequester {
                 let query = Delete(from: todos, where: todos.id == id && todos.userId == userId)
 
                 connection.execute(query: query) { result in
+
+                    if let error = result.asError {
+                        Log.error(error.localizedDescription)
+                    }
+
                     completion(result.success ? nil : result.asError)
                 }
             }

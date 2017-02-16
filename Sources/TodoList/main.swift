@@ -12,8 +12,7 @@ HeliumLogger.use(.entry)
 let credentials = Credentials()
 credentials.register(plugin: CustomCredentialsPlugin())
 
-var logger = HeliumLogger(.entry)
-logger.defaultLog(.entry, msg: "Start logging")
+Log.info("App started")
 
 let bodyParser = BodyParser()
 
@@ -23,11 +22,16 @@ router.get("/refresh") { request, response, next in
     let type: LoggerMessageType =  {
         switch ProcessInfo.processInfo.environment["LOG_LEVEL"] ?? "" {
         case "ENTRY": return .entry
+        case "EXIT": return .exit
+        case "DEBUG": return .debug
+        case "VERBOSE": return .verbose
+        case "INFO": return .info
+        case "WARNING": return .warning
         case "ERROR": return .error
         default: return .verbose
         }
     }()
-    logger = HeliumLogger(type)
+    HeliumLogger.use(type)
     _ = response.send(status: .OK)
     next()
 }
@@ -35,6 +39,6 @@ router.get("/refresh") { request, response, next in
 router.register(controller: TodosController(), middleware: credentials, bodyParser)
 router.register(controller: ImagesController(), middleware: bodyParser)
 
-let port = Int(ProcessInfo.processInfo.environment["PORT"] ?? "8080") ?? 8080
+let port = Int(ProcessInfo.processInfo.environment[EnvironmentKey.PORT.rawValue] ?? "8080") ?? 8080
 Kitura.addHTTPServer(onPort: port, with: router)
 Kitura.run()

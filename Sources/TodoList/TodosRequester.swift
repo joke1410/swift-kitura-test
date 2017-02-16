@@ -17,7 +17,6 @@ class TodosRequester {
     }
 
     func update(todo: Todo, userId: String, completion: @escaping (Error?) -> Void) {
-        logger.defaultLog(.debug, msg: "wchodzimy w update")
         dbTodosRequester.update(todo: todo, userId: userId, completion: completion)
     }
 
