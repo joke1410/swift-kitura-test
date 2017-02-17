@@ -30,19 +30,11 @@ class DbTodosProvider {
                 let query = Select(todos.id, todos.title, from: todos).where(todos.userId == userId)
 
                 connection.execute(query: query) { result in
-                    if let resultSet = result.asResultSet {
-                        var array: [[String: Any]] = []
 
-                        for row in resultSet.rows {
-                            var dict: [String: Any] = [:]
-                            dict["id"] = row[0] as? String ?? ""
-                            dict["title"] = row[1] as? String ?? ""
-                            array.append(dict)
-                        }
-                        let json = JSON(array)
+                    if let rows = result.asRows {
+                        let json = JSON(rows)
                         completion(json, nil)
-                    }
-                    else if let queryError = result.asError {
+                    } else if let queryError = result.asError {
                         Log.error(queryError.localizedDescription)
                         completion(nil, queryError)
                     }

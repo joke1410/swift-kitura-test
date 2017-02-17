@@ -31,15 +31,10 @@ class DbUsersProvider {
                 let query = Select(users.id, from: users).where(users.email == email && users.passwordHash == passwordHash)
 
                 connection.execute(query: query) { result in
-                    if let resultSet = result.asResultSet {
-                        var id: String? = nil
-                        for row in resultSet.rows {
-                            id = row[0] as? String
-                            break
-                        }
+                    if let rows = result.asRows {
+                        let id = rows.first?["id"] as? String
                         completion(id, id == nil ? DbError.notFound : nil)
-                    }
-                    else if let queryError = result.asError {
+                    } else if let queryError = result.asError {
                         Log.error(queryError.localizedDescription)
                         completion(nil, queryError)
                     }
