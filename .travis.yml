@@ -12,5 +12,6 @@ script:
 - eval "$(curl -sL https://swift.vapor.sh/codecov)"
 deploy:
   provider: heroku
+  buildpack: https://github.com/kylef/heroku-buildpack-swift
   api_key: $HEROKU_API_KEY
   app: pbruz
