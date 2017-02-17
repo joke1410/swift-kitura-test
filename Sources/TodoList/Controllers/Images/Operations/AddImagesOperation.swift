@@ -1,6 +1,6 @@
 //
-//  AddImagesEndpoint.swift
-//  backendProject
+//  AddImagesOperation.swift
+//  TodoListBackend
 //
 //  Created by Peter Bruz on 08/02/2017.
 //
@@ -11,9 +11,10 @@ import Kitura
 import SwiftyJSON
 import LoggerAPI
 
-struct AddImagesEndpoint: Endpoint {
+struct AddImagesOperation: Operation {
+
     let method = HTTPMethod.POST
-    let path = "/images"
+
     let routerHandler: RouterHandler = { request, response, next in
 
         // WIP

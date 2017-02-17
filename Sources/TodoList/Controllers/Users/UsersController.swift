@@ -1,17 +1,18 @@
 //
 //  UsersController.swift
-//  backendProject
+//  TodoListBackend
 //
 //  Created by Peter Bruz on 19/11/2016.
 //
 //
 
 import Foundation
-import Kitura
 
 final class UsersController: Controller {
 
-    var endpoints: [Endpoint]  = [
-        CreateUserEndpoint()
+    let endpoint = "/users"
+
+    let operations: [Operation] = [
+        CreateUserOperation()
     ]
 }

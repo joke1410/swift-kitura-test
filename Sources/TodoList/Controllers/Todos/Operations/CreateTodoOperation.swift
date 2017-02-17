@@ -1,18 +1,20 @@
 //
-//  DeleteTodoEndpoint.swift
-//  backendProject
+//  CreateTodoOperation.swift
+//  TodoListBackend
 //
-//  Created by Peter Bruz on 22/01/2017.
+//  Created by Peter Bruz on 21/01/2017.
 //
 //
 
 import Foundation
 import Kitura
+import SwiftyJSON
 import LoggerAPI
 
-struct DeleteTodoEndpoint: Endpoint {
-    let method = HTTPMethod.DELETE
-    let path = "/todos/:id"
+struct CreateTodoOperation: Operation {
+
+    let method = HTTPMethod.POST
+    
     let routerHandler: RouterHandler = { request, response, next in
 
         guard let user = request.userProfile else {
@@ -20,14 +22,20 @@ struct DeleteTodoEndpoint: Endpoint {
             next()
             return
         }
-        
-        guard let id = request.parameters["id"] else {
-            _ = response.send(status: .badRequest)
+
+        guard let json = request.body?.asJSON else  {
+            _ = response.send(status: .unprocessableEntity)
             next()
             return
         }
 
-        TodosRequester().delete(id: id, userId: user.id) { error in
+        guard let todo = try? TodoMapper().mapToTodo(json: json) else {
+            _ = response.send(status: .unprocessableEntity)
+            next()
+            return
+        }
+
+        TodosRequester().add(todo: todo, userId: user.id) { error in
             if let error = error {
                 response.send(error.localizedDescription)
                 Log.error(error.localizedDescription)

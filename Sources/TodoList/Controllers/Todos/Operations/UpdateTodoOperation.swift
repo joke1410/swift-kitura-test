@@ -1,19 +1,19 @@
 //
-//  CreateTodoEndpoint.swift
-//  backendProject
+//  UpdateTodoOperation.swift
+//  TodoListBackend
 //
-//  Created by Peter Bruz on 21/01/2017.
+//  Created by Peter Bruz on 22/01/2017.
 //
 //
 
 import Foundation
 import Kitura
-import SwiftyJSON
 import LoggerAPI
 
-struct CreateTodoEndpoint: Endpoint {
-    let method = HTTPMethod.POST
-    let path = "/todos"
+struct UpdateTodoOperation: Operation {
+
+    let method = HTTPMethod.PUT
+
     let routerHandler: RouterHandler = { request, response, next in
 
         guard let user = request.userProfile else {
@@ -34,13 +34,12 @@ struct CreateTodoEndpoint: Endpoint {
             return
         }
 
-        TodosRequester().add(todo: todo, userId: user.id) { error in
+        TodosRequester().update(todo: todo, userId: user.id) { error in
             if let error = error {
                 response.send(error.localizedDescription)
                 Log.error(error.localizedDescription)
             } else {
-//                _ = response.send(status: .noContent)
-                response.send("added")
+                _ = response.send(status: .noContent)
             }
             next()
         }
