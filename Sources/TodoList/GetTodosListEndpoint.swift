@@ -8,6 +8,7 @@
 
 import Foundation
 import Kitura
+import LoggerAPI
 
 struct GetTodosListEndpoint: Endpoint {
     let method = HTTPMethod.GET
@@ -23,6 +24,7 @@ struct GetTodosListEndpoint: Endpoint {
         TodosProvider().provideList(userId: user.id) { todos, error in
             if let error = error {
                 response.send(error.localizedDescription)
+                Log.error(error.localizedDescription)
             } else if let todos = todos {
                 response.send(json: TodoMapper().mapToJson(todoList: todos))
             }

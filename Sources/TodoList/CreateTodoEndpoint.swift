@@ -9,6 +9,7 @@
 import Foundation
 import Kitura
 import SwiftyJSON
+import LoggerAPI
 
 struct CreateTodoEndpoint: Endpoint {
     let method = HTTPMethod.POST
@@ -36,6 +37,7 @@ struct CreateTodoEndpoint: Endpoint {
         TodosRequester().add(todo: todo, userId: user.id) { error in
             if let error = error {
                 response.send(error.localizedDescription)
+                Log.error(error.localizedDescription)
             } else {
 //                _ = response.send(status: .noContent)
                 response.send("added")

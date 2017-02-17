@@ -10,6 +10,7 @@ import Foundation
 import Kitura
 import KituraNet
 import Credentials
+import LoggerAPI
 
 final class CustomCredentialsPlugin: CredentialsPluginProtocol {
 
@@ -37,8 +38,9 @@ final class CustomCredentialsPlugin: CredentialsPluginProtocol {
         }
 
         identifyAndAuthenticate(basicAuth: basicAuth) { id, error in
-            if let _ = error {
+            if let error = error {
                 onFailure(.unauthorized, nil)
+                Log.error(error.localizedDescription)
                 return
             }
 

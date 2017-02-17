@@ -8,6 +8,7 @@
 
 import Foundation
 import SwiftyJSON
+import LoggerAPI
 
 enum JSONMappingError: Error {
     case failedToMapObject(type: String)
@@ -41,8 +42,13 @@ struct TodoMapper {
         var todos = [Todo]()
 
         array.forEach { object in
-            guard let todo = try? mapToTodo(json: object) else { return }
-            todos.append(todo)
+            do {
+                let todo = try mapToTodo(json: object)
+                todos.append(todo)
+            } catch let error {
+                Log.error(error.localizedDescription)
+            }
+
         }
 
         return todos

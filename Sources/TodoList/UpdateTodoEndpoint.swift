@@ -36,6 +36,7 @@ struct UpdateTodoEndpoint: Endpoint {
         TodosRequester().update(todo: todo, userId: user.id) { error in
             if let error = error {
                 response.send(error.localizedDescription)
+                Log.error(error.localizedDescription)
             } else {
                 _ = response.send(status: .noContent)
             }

@@ -9,6 +9,7 @@
 import Foundation
 import Kitura
 import SwiftyJSON
+import LoggerAPI
 
 struct AddImagesEndpoint: Endpoint {
     let method = HTTPMethod.POST
@@ -25,7 +26,7 @@ struct AddImagesEndpoint: Endpoint {
                     do {
                         try data.write(to: URL(fileURLWithPath: path).appendingPathComponent("images/\($0.name).jpg"), options: .atomic)
                     } catch {
-                        print(error)
+                        Log.error(error.localizedDescription)
                     }
                     _ = response.send(status: .noContent)
                     next()
