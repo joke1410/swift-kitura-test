@@ -1,1 +1,1 @@
-web: .build/release/backendProject
+web: .build/release/TodoList
