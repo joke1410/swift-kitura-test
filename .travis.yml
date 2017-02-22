@@ -12,8 +12,12 @@ script:
 - eval "$(curl -sL https://swift.vapor.sh/ci)"
 # - eval "$(curl -sL https://swift.vapor.sh/codecov)"
 
+before_deploy:
+  - ls
+  - rm -rf Packages/
+  - rm -rf .build/
+
 deploy:
-  skip_cleanup: true
   provider: heroku
   buildpack: https://github.com/kylef/heroku-buildpack-swift
   api_key: $HEROKU_API_KEY
