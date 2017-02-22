@@ -16,6 +16,7 @@ Log.info("===== App started =====")
 
 let bodyParser = BodyParser()
 
+router.get(middleware: StaticFileServer())
 router.get("/images", middleware: StaticFileServer(path: "./images"))
 
 // Register controllers
