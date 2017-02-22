@@ -20,14 +20,14 @@ struct ReloadConfigOperation: Operation {
     let routerHandler: RouterHandler = { request, response, next in
 
         let type: LoggerMessageType =  {
-            switch ProcessInfo.processInfo.environment["LOG_LEVEL"] ?? "" {
-            case "ENTRY": return .entry
-            case "EXIT": return .exit
-            case "DEBUG": return .debug
-            case "VERBOSE": return .verbose
-            case "INFO": return .info
-            case "WARNING": return .warning
-            case "ERROR": return .error
+            switch ProcessInfo.processInfo.environment[EnvironmentKey.LOG_LEVEL.rawValue] ?? "" {
+            case LoggerMessageType.entry.description: return .entry
+            case LoggerMessageType.exit.description: return .exit
+            case LoggerMessageType.debug.description: return .debug
+            case LoggerMessageType.verbose.description: return .verbose
+            case LoggerMessageType.info.description: return .info
+            case LoggerMessageType.warning.description: return .warning
+            case LoggerMessageType.error.description: return .error
             default: return .verbose
             }
         }()
